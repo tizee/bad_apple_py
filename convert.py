@@ -13,7 +13,7 @@ def frames_to_python(frames):
         f.write("frames_data = " + pprint.pformat(frames))
 
 def frames_to_c(frames):
-    with open("data.c","a+") as f:
+    with open("data.c","w+") as f:
         for idx,frame in enumerate(frames):
             f.write("char *frame%d[]= { \n" % idx)
             for line in frame:
