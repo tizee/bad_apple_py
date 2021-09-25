@@ -56,7 +56,7 @@ class Player():
                 if i-self.min_row >= FRAME_HEIGHT or i >= self.terminal_height-1:
                     break
                 self.stdsrc.addstr(
-                        i, max(0,self.min_col), frame[i-self.min_row][:min(self.terminal_width,self.max_col-self.min_col)], curses.color_pair(2))
+                        i, max(0,self.min_col), frame[i-self.min_row][:min(self.terminal_width,self.max_col-self.min_col)], curses.color_pair(1) | curses.A_REVERSE)
 
             # draw time at the bottom
             time_str = f"running for {self.running_time} seconds"
@@ -111,7 +111,6 @@ class Player():
         self.has_resize = True
         self.winch_lock = True
         # wait previous drawing to stop
-        time.sleep(0.1)
         # create new screen
         self.stdsrc = curses.initscr()
 
