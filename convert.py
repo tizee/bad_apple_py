@@ -8,6 +8,19 @@ FRAME_HEIGHT=int(360/8)
 rgb_ascii= list("BADAPPLEISAWESOME(;)VV(;)--^         ")
 rgb_len=len(rgb_ascii)
 
+def frames_to_python(frames):
+    with open("frames_data.py","w") as f:
+        f.write("frames_data = " + pprint.pformat(frames))
+
+def frames_to_c(frames):
+    with open("data.c","a+") as f:
+        for idx,frame in enumerate(frames):
+            f.write("char *frame%d[]= { \n" % idx)
+            for line in frame:
+                f.write("\" %s \",\n" % line)
+            f.write("};\n")
+
+
 def mp4_to_frames(video_path):
     vc = cv.VideoCapture(video_path)
     frames = []
@@ -15,6 +28,8 @@ def mp4_to_frames(video_path):
     count = 0
     while True:
         # use first 100 frames for demonstration
+        if count == 100:
+            break
         f, frame = vc.read()
         if frame is None:
             break
@@ -23,9 +38,7 @@ def mp4_to_frames(video_path):
         frame_ascii =  frame_to_ascii(frame)
         frames.append(frame_ascii)
     vc.release()
-    with open("frames_data.py","w") as f:
-        f.write("frames_data = " + pprint.pformat(frames))
-    return
+    return frames
 
 def frame_to_ascii(frame):
     height, width, _ = frame.shape
@@ -42,8 +55,12 @@ def frame_to_ascii(frame):
     return res
 
 if __name__ == '__main__':
-    if len(sys.argv) != 2:
+    if len(sys.argv) < 2:
         raise ValueError('Please provide video path')
     path = sys.argv[1]
     print(f"convert video {path}")
-    mp4_to_frames(path)
+    frames = mp4_to_frames(path)
+    if sys.argv[2] == 'c':
+        frames_to_c(frames)
+    else:
+        frames_to_python(frames)
