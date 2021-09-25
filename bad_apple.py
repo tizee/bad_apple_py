@@ -45,8 +45,6 @@ class Player():
                         self.stdsrc.addstr(
                             i, self.min_col, frames_data[idx][i-self.min_row], curses.COLOR_WHITE)
                     except Exception as e:
-                        print(
-                            i-self.min_row, len(frames_data[idx]), FRAME_HEIGHT, self.terminal_height)
                         raise e
                 if self.has_resize:
                     break

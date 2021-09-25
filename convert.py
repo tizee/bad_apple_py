@@ -6,11 +6,12 @@ FRAME_WIDTH=int(480/4)
 FRAME_HEIGHT=int(360/8)
 # sort by gray value in descending order
 rgb_ascii= list("BADAPPLEISAWESOME(;)VV(;)--^         ")
-rgb_len=len(grey_ascii_char)
+rgb_len=len(rgb_ascii)
 
 def mp4_to_frames(video_path):
     vc = cv.VideoCapture(video_path)
     frames = []
+    total = vc.get(int(cv.CAP_PROP_FRAME_COUNT))
     count = 0
     while True:
         # use first 100 frames for demonstration
@@ -20,9 +21,10 @@ def mp4_to_frames(video_path):
         if frame is None:
             break
         count += 1
-        print("\r current frame: %d" % count,end="")
+        print("\rcurrent frame: %d / %d" % (count, total),end="")
         frame_ascii =  frame_to_ascii(frame)
         frames.append(frame_ascii)
+    vc.release()
     with open("frames_data.py","w") as f:
         f.write("frames_data = " + pprint.pformat(frames))
     return
