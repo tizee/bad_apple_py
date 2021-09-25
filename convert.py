@@ -15,8 +15,6 @@ def mp4_to_frames(video_path):
     count = 0
     while True:
         # use first 100 frames for demonstration
-        if count == 100:
-            break
         f, frame = vc.read()
         if frame is None:
             break
