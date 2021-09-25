@@ -51,10 +51,12 @@ class Player():
                 self.current_frame_idx = 0
             frame = frames_data[self.current_frame_idx]
             for i in range(self.min_row, self.max_row):
+                # skip overflow
                 if i < 0:
                     continue
                 if i-self.min_row >= FRAME_HEIGHT or i >= self.terminal_height-1:
                     break
+                # make sure drawing in the visible area of screen
                 self.stdsrc.addstr(
                         i, max(0,self.min_col), frame[i-self.min_row][:min(self.terminal_width,self.max_col-self.min_col)], curses.color_pair(1) | curses.A_REVERSE)
 
